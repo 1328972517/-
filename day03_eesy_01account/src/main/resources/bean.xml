@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--配置service对象-->
+    <bean id="accountService" class="com.zry.service.impl.AccountServiceImpl">
+       <!--注入dao-->
+        <property name="accountDao" ref="accountDao"></property>
+        <!--注入事务管理器-->
+        <property name="txManager" ref="txManager"></property>
+    </bean>
+    <!--配置Dao对象-->
+    <bean id="accountDao" class="com.zry.dao.impl.AccountDaoImpl">
+        <!--注入QueryRunner对象-->
+        <property name="runner" ref="runner"></property>
+        <!--注入ConnectionUtils-->
+        <property name="connectionUtils" ref="connectionUtils"></property>
+    </bean>
+    <!--配置QueryRunner对象-->
+    <bean id="runner" class="org.apache.commons.dbutils.QueryRunner" scope="prototype"></bean>
+    <!--配置数据源-->
+    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!--注入内容:连接数据库的必备信息-->
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://47.93.221.205:3306/eesy_mybatis"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="RFVTGBYHNUJM"></property>
+    </bean>
+
+    <!--配置Connection的工具类:ConnectionUtils-->
+    <bean id="connectionUtils" class="com.zry.utils.ConnectionUtils">
+        <!--配置数据源(原来配置数据源实在QueryRunner下)-->
+        <property name="dataSource" ref="datasource"></property>
+    </bean>
+    <!--配置事务管理器-->
+    <bean id="txManager" class="com.zry.utils.TransactionManager">
+        <!--注入ConnectionUtils-->
+        <property name="connectionUtils" ref="connectionUtils"></property>
+    </bean>
+</beans>
