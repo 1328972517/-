@@ -15,11 +15,7 @@ import java.util.List;
 public class AccountServiceImpl implements IAccountService {
 
     private IAccountDao accountDao;
-    private TransactionManager txManager;
 
-    public void setTxManager(TransactionManager txManager) {
-        this.txManager = txManager;
-    }
 
     public void setAccountDao(IAccountDao accountDao) {
         this.accountDao = accountDao;
@@ -59,12 +55,13 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public void transfer(String sourceName, String targetName, Float money) {
 
+            System.out.println("begin transfer!!");
             Account source=accountDao.findAccountByName(sourceName);
             Account target=accountDao.findAccountByName(targetName);
             source.setMoney(source.getMoney()-money);
             target.setMoney(target.getMoney()+money);
             accountDao.updateAccount(source);
-            int i=1/0;
+//            int i=1/0;
             accountDao.updateAccount(target);
 
 
